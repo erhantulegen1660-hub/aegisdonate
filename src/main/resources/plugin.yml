@@ -1,0 +1,43 @@
+name: AegisCore
+version: 1.0.0
+main: ru.aegis.core.AegisCore
+api-version: '1.21'
+authors: [Aegis]
+description: AEGIS - HUD, resource pack, amethyst currency and battle royale phases.
+
+commands:
+  aegis:
+    description: Main AEGIS admin command
+    usage: /aegis help
+    aliases: [ae]
+    permission: aegis.admin
+  amethyst:
+    description: Amethyst currency
+    usage: /amethyst [balance|give|take|set|item]
+    aliases: [ame, amethysts]
+
+  donate:
+    description: Donate menu (VIP, VIP+, title token)
+    usage: /donate
+    permission: aegis.donate
+  suffix:
+    description: Set your custom title (costs a title token)
+    usage: /suffix <MiniMessage text> | preview <text> | reset
+    permission: aegis.suffix
+
+permissions:
+  aegis.admin:
+    description: Full access to AEGIS commands
+    default: op
+  aegis.bypass:
+    description: Join without the resource pack
+    default: false
+  aegis.balance:
+    description: Check your own amethyst balance
+    default: true
+  aegis.donate:
+    description: Open the donate menu
+    default: true
+  aegis.suffix:
+    description: Use /suffix
+    default: true

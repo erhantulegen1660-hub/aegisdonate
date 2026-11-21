@@ -1,0 +1,300 @@
+# ===========================================================================
+#  AEGIS core  -  config.yml
+#  Texts use MiniMessage:  <#C084FC>цвет</#C084FC>  <gradient:#7B3FF2:#E9D5FF>текст</gradient>
+#  After editing:  /aegis reload
+# ===========================================================================
+
+server-ip: "aegis.gamepvp.ru"
+
+# ----------------------------------------------------------------- RESOURCE PACK
+resourcepack:
+  enabled: true
+  # true  = without the pack the player is kicked (cannot play)
+  required: true
+  # embedded = the plugin serves pack.zip itself over HTTP (needs a free TCP port)
+  # external = you upload plugins/AegisCore/pack.zip to any host and put the link below
+  mode: embedded
+  public-host: "aegis.gamepvp.ru"
+  port: 8123
+  external-url: ""
+  # seconds the player may take to download/load the pack before being kicked
+  timeout-seconds: 60
+  bypass-permission: "aegis.bypass"
+  prompt: "<#C084FC><bold>AEGIS</bold></#C084FC> <gray>- ресурспак обязателен для игры"
+  kick-declined: "<#C084FC>AEGIS</#C084FC>\n<gray>Для игры на сервере нужен ресурспак.\nВключите «Ресурспаки сервера» в настройках сервера и зайдите снова."
+  kick-failed: "<#C084FC>AEGIS</#C084FC>\n<gray>Не удалось загрузить ресурспак. Попробуйте зайти ещё раз."
+  kick-timeout: "<#C084FC>AEGIS</#C084FC>\n<gray>Ресурспак не загрузился вовремя. Попробуйте зайти ещё раз."
+
+# ------------------------------------------------------------------------- HUD
+hud:
+  enabled: true
+  timezone: "Europe/Moscow"
+  # daily restart time (HH:mm) for %restart_in%; empty = hide
+  restart-time: "05:00"
+  # animated "AEGIS" title: gradient colours move through the letters
+  title-animation:
+    enabled: true
+    period-ms: 3200
+    update-ticks: 3
+    colors: ["#5B21B6", "#8B5CF6", "#D8B4FE", "#FFFFFF", "#D8B4FE", "#8B5CF6"]
+
+  # ---- profile shown in the HUB ------------------------------------------
+  # Icons:  %icon_user% %icon_ping% %icon_gem% %icon_calendar% %icon_clock% %icon_hourglass%
+  #         %icon_trophy% %icon_skull% %icon_heart% %icon_swords% %icon_flag% %icon_shield%
+  # Values: %nick% %ping% %amethyst% %wins% %losses% %total_kills% %date% %time% %restart_in% %ip%
+  #         %online% %alive% %kills% %phase_name% %next_change% %border%
+  # Max 15 lines (blank "" lines count).
+  hub:
+    - "%icon_user% <#E6E6FF>%nick%"
+    - "%icon_ping% <#5CFF8A>%ping% мс"
+    - "%icon_gem% <#D8B4FE>%amethyst%"
+    - ""
+    - "%icon_calendar% <#9CC4FF>%date%"
+    - "%icon_clock% <#FFFFFF>%time%"
+    - "%icon_hourglass% <#FFD84A>%restart_in%"
+    - ""
+    - "%icon_trophy% <#FFD84A>Побед: %wins%"
+    - "%icon_skull% <#FF7A9A>Поражений: %losses%"
+    - ""
+    - "<#C4A1FF>%ip%"
+
+  # ---- profiles of the BATTLE ROYALE (KB), one per phase ------------------
+  # keys: default, MINING, SHRINKING, PRE_DEATHMATCH, DEATHMATCH
+  # a phase without its own list uses "default"
+  kb:
+    default:
+      - "%icon_user% <#E6E6FF>%nick%"
+      - "%icon_ping% <#5CFF8A>%ping% мс"
+      - "%icon_gem% <#D8B4FE>%amethyst%"
+      - ""
+      - "%icon_heart% <#FF9AB8>Живых: %alive%"
+      - "%icon_swords% <#FFE3EC>Убийств: %kills%"
+      - "%icon_flag% <#7CFFC4>%phase_name%"
+      - "%icon_hourglass% <#FFD84A>До смены: %next_change%"
+      - "%icon_shield% <#FF9AB8>Барьер: %border% бл."
+      - ""
+      - "%icon_clock% <#FFFFFF>%time%"
+      - "<#C4A1FF>%ip%"
+    PRE_DEATHMATCH:
+      - "%icon_user% <#E6E6FF>%nick%"
+      - "%icon_ping% <#5CFF8A>%ping% мс"
+      - ""
+      - "%icon_heart% <#FF9AB8>Живых: %alive%"
+      - "%icon_swords% <#FFE3EC>Убийств: %kills%"
+      - "%icon_flag% <#FFB86C>%phase_name%"
+      - "%icon_hourglass% <#FFD84A>Дезматч через: %next_change%"
+      - "%icon_shield% <#FF9AB8>Барьер: %border% бл."
+      - ""
+      - "<#C4A1FF>%ip%"
+    DEATHMATCH:
+      - "%icon_user% <#E6E6FF>%nick%"
+      - "%icon_ping% <#5CFF8A>%ping% мс"
+      - ""
+      - "%icon_heart% <#FF9AB8>Живых: %alive%"
+      - "%icon_swords% <#FFE3EC>Убийств: %kills%"
+      - "%icon_flag% <#FF5C7A>%phase_name%"
+      - "%icon_hourglass% <#FFD84A>Конец: %next_change%"
+      - ""
+      - "<#C4A1FF>%ip%"
+
+# ---------------------------------------------------------------------- GAME (KB)
+# The timeline runs top to bottom. At the start of every phase the world border
+# moves to border-size (diameter) over shrink-seconds (0 = instantly).
+# type: MINING | SHRINKING | PRE_DEATHMATCH | DEATHMATCH
+game:
+  world: "world"
+  center-x: 0
+  center-z: 0
+  spectate-on-death: true
+  hub-hud-after-end: true
+  border-after-end: 2000
+  timeline:
+    - type: MINING
+      name: "Добыча"
+      duration: 900
+      border-size: 1000
+      shrink-seconds: 0
+    - type: SHRINKING
+      name: "Сужение I"
+      duration: 420
+      border-size: 600
+      shrink-seconds: 300
+    - type: SHRINKING
+      name: "Сужение II"
+      duration: 420
+      border-size: 200
+      shrink-seconds: 300
+    - type: SHRINKING
+      name: "Сужение III"
+      duration: 300
+      border-size: 80
+      shrink-seconds: 240
+    - type: PRE_DEATHMATCH
+      name: "Пред-дезматч"
+      duration: 60
+      border-size: 40
+      shrink-seconds: 50
+    - type: DEATHMATCH
+      name: "Дезматч"
+      duration: 600
+      border-size: 40
+      shrink-seconds: 0
+
+# amethysts given automatically (0 = nothing)
+rewards:
+  win: 0
+  kill: 0
+
+currency:
+  # right click with the physical amethyst item = add it to the balance (sneak = whole stack)
+  redeem-item: true
+
+messages:
+  prefix: "<#A855F7><bold>AEGIS</bold></#A855F7> <dark_gray>»</dark_gray> "
+  phase-title: "<gradient:#7B3FF2:#E9D5FF><bold><phase></bold></gradient>"
+  phase-subtitle: "<gray>Новая фаза"
+  game-start: "<#E9D5FF>Королевская битва началась!"
+  game-end-winner: "<#E9D5FF>Победитель: <#FFD84A><winner>"
+  game-end-nobody: "<#E9D5FF>Игра окончена без победителя."
+
+# ===========================================================================
+#  DONATE: ranks, titles, cases, /donate menu
+# ===========================================================================
+
+# ---- ranks. Badges VIP / VIP+ are drawn by the resource pack (font aegis:hud).
+ranks:
+  vip:
+    color: "#EF4444"        # nick colour in chat and tab
+    win-reward: 5           # amethysts for a win (instead of rewards.win)
+    case-days: 14           # a case every N days
+    case-id: "vip"          # which case (see "cases" below)
+    join-full: true         # can join a full server
+  vipplus:
+    color: "#A855F7"
+    win-reward: 10
+    case-days: 7
+    case-id: "vipplus"
+    join-full: true
+
+# ---- chat: [badge] Nick Title » message. Turn off if another chat plugin formats chat.
+chat:
+  enabled: true
+  separator: " <dark_gray>»</dark_gray> "
+
+# ---- custom title (/suffix) --------------------------------------------------
+title:
+  max-length: 16            # visible characters, tags are not counted
+  editor-url: "https://webui.advntr.dev/"
+  # swear-word stems (lower case). Checked with letter look-alikes (a=а, 0=о ...) and repeats removed.
+  # Add your own words here, then /aegis reload
+  banned-words:
+    - "хуй"
+    - "хуе"
+    - "хуя"
+    - "хуи"
+    - "пизд"
+    - "ебал"
+    - "ебан"
+    - "ебат"
+    - "ебуч"
+    - "ебла"
+    - "ёб"
+    - "бляд"
+    - "блят"
+    - "сука"
+    - "сучар"
+    - "пидор"
+    - "пидар"
+    - "пидр"
+    - "гондон"
+    - "мудак"
+    - "мудил"
+    - "залуп"
+    - "шлюх"
+    - "дроч"
+    - "fuck"
+    - "shit"
+    - "bitch"
+    - "cunt"
+    - "dick"
+    - "nigg"
+    - "fagg"
+    - "whore"
+    - "slut"
+    - "нацист"
+    - "гитлер"
+
+# ---- cases. The case is an item; right click opens it.
+# rewards: empty = the case cannot be opened yet (it is kept, not wasted).
+# When you are ready, add rewards, e.g.:
+#   rewards:
+#     - weight: 70                      # chance weight
+#       name: "<#C084FC>50 аметистов"   # shown to the player
+#       commands:                       # run from the console, %player% = opener
+#         - "amethyst give %player% 50"
+#     - weight: 5
+#       name: "<gold>Косметика: Корона"
+#       commands:
+#         - "lp user %player% permission set cosmetic.crown true"
+cases:
+  vip:
+    name: "<#EF4444><bold>Кейс VIP"
+    rewards: []
+  vipplus:
+    name: "<#A855F7><bold>Кейс VIP+"
+    rewards: []
+
+# ---- /donate menu texts (MiniMessage). %max% and %url% are filled in automatically.
+donate:
+  title: "<gradient:#7B3FF2:#E9D5FF><bold>AEGIS</bold></gradient> <dark_gray>• <#E9D5FF>Донат"
+  buy-hint: "<gray>Покупка доната скоро появится у NPC. Пока ранги и токены выдаёт администрация."
+  vip:
+    title: "<#EF4444><bold>VIP"
+    lore:
+      - "<dark_gray>Проходка на ивенты"
+      - ""
+      - "<#EF4444>• <gray>Проходка на ивенты сервера"
+      - "<#EF4444>• <gray>Кейс с косметикой <white>раз в 2 недели"
+      - "<#EF4444>• <gray>За победу: <#C084FC>+5 аметистов"
+      - "<#EF4444>• <gray>Вход на заполненный сервер"
+      - "<#EF4444>• <gray>Плашка <#EF4444>VIP</#EF4444> в чате и табе"
+      - ""
+      - "<yellow>Нажмите, чтобы узнать, как купить"
+  vipplus:
+    title: "<#A855F7><bold>VIP+"
+    lore:
+      - "<dark_gray>Всё из VIP, но лучше"
+      - ""
+      - "<#A855F7>• <gray>Проходка на ивенты сервера"
+      - "<#A855F7>• <gray>Кейс с косметикой <white>каждую неделю"
+      - "<#A855F7>• <gray>За победу: <#C084FC>+10 аметистов"
+      - "<#A855F7>• <gray>Вход на заполненный сервер"
+      - "<#A855F7>• <gray>Плашка <#A855F7>VIP+</#A855F7> в чате и табе"
+      - ""
+      - "<yellow>Нажмите, чтобы узнать, как купить"
+  token:
+    title: "<#C084FC><bold>Токен на свой титул"
+    lore:
+      - "<dark_gray>Ваш текст рядом с ником"
+      - ""
+      - "<#C084FC>• <gray>Титул виден в чате и табе"
+      - "<#C084FC>• <gray>Цвета, градиент, жирный шрифт"
+      - "<#C084FC>• <gray>Максимум <white>%max%</white> символов"
+      - "<#C084FC>• <gray>Задаётся командой <white>/suffix"
+      - "<red>• Нельзя: <gray>мат, оскорбления, реклама"
+      - ""
+      - "<yellow>Нажмите, чтобы увидеть инструкцию"
+  help:
+    title: "<#E9D5FF><bold>Как сделать титул"
+    lore:
+      - "<gray>1. Откройте редактор:"
+      - "<aqua>%url%"
+      - "<gray>2. Напишите текст, оформите, скопируйте запись"
+      - "<gray>3. В игре: <white>/suffix <запись>"
+      - "<gray>Проверка без токена: <white>/suffix preview <запись>"
+      - ""
+      - "<yellow>Нажмите - получить ссылку и подробности в чат"
+  status:
+    title: "<#E9D5FF><bold>Мой статус"
+  balance:
+    title: "<#C084FC><bold>Аметисты"
